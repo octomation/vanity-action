@@ -1,0 +1,14 @@
+[
+  "",
+  "/cmd/tool",
+  "/internal/broken",
+  "/internal/cgo",
+  "/internal/docplus",
+  "/internal/exported",
+  "/internal/legacy",
+  "/internal/mixed",
+  "/internal/tagged",
+  "/internal/testonly",
+  "/internal/wasm",
+  "/internal/windows"
+]
