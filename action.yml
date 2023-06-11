@@ -1,0 +1,76 @@
+name: OctoLab vanity
+description: >-
+  Publishes a Go module's stable release to the octolab/vanity catalog behind
+  go.octolab.org: one entry modules/<module path>.json and one catalog tag
+  <name>--vX.Y.Z. Run publish from the module's release workflow on the
+  checked out release tag, with go on PATH.
+author: OctoLab
+
+branding:
+  icon: package
+  color: purple
+
+inputs:
+  command:
+    description: publish or entry (print the module's entry).
+    required: false
+    default: publish
+  token:
+    description: publish. Token with contents write access to the catalog repository.
+    required: false
+  name:
+    description: >-
+      Short name of the module in the catalog: kebab-case segments joined by
+      /, e.g. indexit or ecosystem/tablo, unique across the catalog; the
+      catalog tag is <name>--vX.Y.Z. The repository name by default.
+    required: false
+  packages:
+    description: >-
+      Packages to publish: auto (a public repository publishes all, a private or
+      internal one the module root only), all, or root.
+    required: false
+    default: auto
+  source-tag:
+    description: publish. Release tag of the module, vX.Y.Z; annotated, signed and verified by GitHub.
+    required: false
+    default: ${{ github.ref_name }}
+  source-sha:
+    description: publish. Optional commit the workflow released; must equal the checked out commit.
+    required: false
+  catalog-repository:
+    description: publish. Catalog repository.
+    required: false
+    default: octolab/vanity
+  github-token:
+    description: Token that reads the module's repository; the workflow's own token by default.
+    required: false
+    default: ${{ github.token }}
+  dry-run:
+    description: publish. Decide and log the entry without writing the commit or the tag.
+    required: false
+    default: 'false'
+
+outputs:
+  decision:
+    description: >-
+      What the run did: publish (wrote the entry), tag (tagged an earlier
+      publication), published (already published), backport (an older
+      version, nothing to do), skip (a prerelease, a module outside
+      go.octolab.org, or a template's module in a project generated from
+      it), entry (command entry).
+  changed:
+    description: publish. Whether this run wrote a catalog commit.
+  catalog-commit:
+    description: publish. Catalog commit that holds this release; empty when none.
+  catalog-tag:
+    description: publish. Catalog tag of this release, <name>--vX.Y.Z; empty when none.
+  module:
+    description: Module path, e.g. go.octolab.org/toolset/indexit.
+  name:
+    description: Short name of the module in the catalog.
+  entry-path:
+    description: Path of the entry in the catalog, modules/<module path>.json.
+
+runs:
+  using: node24
+  main: scripts/action.mjs
